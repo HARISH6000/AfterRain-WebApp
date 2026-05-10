@@ -20,7 +20,10 @@ const JournalHome = ({ accessToken, onLogout, onOpenPreferences }) => {
       setIsFetching(true);
       const data = await getJournalsFromDrive(accessToken);
       
-      if (data.error && data.error.message.includes('401')) {
+      if (data.error && (data.error.message.includes('401') || data.error.message.includes('403'))) {
+        if (data.error.message.includes('403')) {
+          alert("Drive permissions are required to sync your journals. Please sign in again and ensure the 'Google Drive' checkbox is selected.");
+        }
         onLogout();
         return;
       }
