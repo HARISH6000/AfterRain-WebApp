@@ -9,7 +9,10 @@ export const getJournalsFromDrive = async (accessToken) => {
     });
     
     if (searchRes.status === 401) throw new Error('401');
-    if (!searchRes.ok) throw new Error('Failed to search Drive');
+    if (!searchRes.ok) {
+      console.error(`Google Drive Search Failed: ${searchRes.status} ${searchRes.statusText}`);
+      throw new Error('Failed to search Drive');
+    }
     
     const searchData = await searchRes.json();
     
