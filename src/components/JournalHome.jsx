@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getJournalsFromDrive, saveJournalsToDrive } from '../utils/driveSync';
-import { LogOut } from 'lucide-react';
+import { LogOut, Settings } from 'lucide-react';
 
 const MOODS = ['Calm', 'Tired', 'Lonely', 'Hopeful', 'Overwhelmed', 'Peaceful', 'Empty', 'Anxious'];
 
-const JournalHome = ({ accessToken, onLogout }) => {
+const JournalHome = ({ accessToken, onLogout, onOpenPreferences }) => {
   const [entries, setEntries] = useState([]);
   const [currentText, setCurrentText] = useState('');
   const [selectedMood, setSelectedMood] = useState('');
@@ -93,7 +93,15 @@ const JournalHome = ({ accessToken, onLogout }) => {
       {/* Main Journal Area */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', height: '100%', position: 'relative' }}>
         {/* Top Header Row with Sign Out */}
-        <div style={{ position: 'absolute', top: 0, right: 0, zIndex: 20 }}>
+        <div style={{ position: 'absolute', top: 0, right: 0, zIndex: 20, display: 'flex', gap: '1rem' }}>
+          <button 
+            onClick={onOpenPreferences}
+            className="glass-button"
+            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1rem', fontSize: '0.8rem' }}
+          >
+            <Settings size={14} />
+            Settings
+          </button>
           <button 
             onClick={onLogout}
             className="glass-button"
