@@ -8,7 +8,7 @@ const AmbientAudio = () => {
   
   useEffect(() => {
     // Initialize audio
-    audioRef.current = new Audio('/cfl_turningpages-ink-amp-rain-zen-lofi-469329.mp3');
+    audioRef.current = new Audio('/ambient-lofi.mp3');
     audioRef.current.loop = true;
     audioRef.current.volume = 0.5; // Starts at 50% volume
 
