@@ -34,8 +34,29 @@ function App() {
         localStorage.setItem('afterrain_fullscreen_pref', isFull ? 'true' : 'false');
       }
     };
+
+    const handleKeyDown = (e) => {
+      if (e.key.toLowerCase() === 'f') {
+        // Don't toggle if user is typing in the editor or search bars
+        if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+        
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(err => {
+            console.error(`Error enabling fullscreen: ${err.message}`);
+          });
+        } else {
+          document.exitFullscreen();
+        }
+      }
+    };
+
     document.addEventListener('fullscreenchange', handleFullscreenChange);
-    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    window.addEventListener('keydown', handleKeyDown);
+    
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   // Fetch journals when logged in

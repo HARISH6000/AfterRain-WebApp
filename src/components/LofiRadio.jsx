@@ -86,18 +86,21 @@ const LofiRadio = () => {
       <motion.div 
         className="glass-panel" 
         animate={{ 
-          minWidth: isHovered ? '380px' : '200px',
-          padding: '0.6rem 1rem'
+          width: isHovered ? '400px' : '220px', // Slightly wider default to prevent clipping
         }}
+        transition={{ duration: 1, ease: "easeInOut" }}
         style={{ 
           display: 'flex', 
           alignItems: 'center', 
-          gap: '1.25rem',
+          padding: '0 0.75rem',
+          height: '56px', // Fixed height for perfect vertical centering
+          gap: '1rem',
           borderRadius: 'var(--radius-full)',
-          transition: 'all 1s cubic-bezier(0.4, 0, 0.2, 1)', // Slowed from 0.4s
           background: 'rgba(15, 23, 42, 0.8)',
           border: '1px solid rgba(255, 255, 255, 0.08)',
-          overflow: 'hidden'
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          boxSizing: 'border-box'
         }}
       >
         {/* Play/Pause Button (Speaker) */}

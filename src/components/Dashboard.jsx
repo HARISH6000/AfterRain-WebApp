@@ -15,18 +15,18 @@ const Dashboard = ({ onOpenJournal, onOpenSettings, onQuickJournal }) => {
   }, []);
 
   const formatTime = (date) => {
-    return date.toLocaleTimeString('en-US', { 
-      hour: '2-digit', 
+    return date.toLocaleTimeString('en-US', {
+      hour: '2-digit',
       minute: '2-digit',
-      hour12: true 
+      hour12: true
     });
   };
 
   const getGreeting = () => {
     const hour = time.getHours();
-    if (hour < 12) return 'Good Morning';
-    if (hour < 17) return 'Good Afternoon';
-    return 'Good Evening';
+    if (hour < 12) return 'Good morning';
+    if (hour < 17) return 'Good afternoon';
+    return 'Good evening';
   };
 
   const handleMoodSelect = (mood) => {
@@ -48,7 +48,7 @@ const Dashboard = ({ onOpenJournal, onOpenSettings, onQuickJournal }) => {
         justifyContent: 'flex-start',
         position: 'relative',
         zIndex: 10,
-        padding: '2.5rem' // Standard margin
+        padding: '2.5rem'
       }}
     >
       {/* Top Header Row (Greeting + Dock) */}
@@ -59,48 +59,62 @@ const Dashboard = ({ onOpenJournal, onOpenSettings, onQuickJournal }) => {
         alignItems: 'flex-start',
         marginBottom: '2rem'
       }}>
-        {/* Indented Greeting + Time/Weather Cluster */}
+        {/* Indented Greeting + Mantra Cluster */}
         <div style={{ marginLeft: '2rem' }}>
           <motion.h2
             initial={{ x: -20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 2, ease: "easeOut" }} // Relaxed duration
-            style={{ 
-              fontFamily: 'var(--font-display)', 
-              fontSize: '2.5rem', 
-              fontWeight: 300, 
+            transition={{ duration: 2.5, ease: "easeOut" }}
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: '2.8rem',
+              fontWeight: 300,
               color: 'var(--color-text-primary)',
               margin: 0,
-              marginBottom: '0.75rem'
+              marginBottom: '0.25rem'
             }}
           >
             {getGreeting()}
           </motion.h2>
 
+          <motion.p
+            initial={{ x: -20, opacity: 0 }}
+            animate={{ x: 0, opacity: 0.6 }}
+            transition={{ delay: 1, duration: 2.5 }}
+            style={{
+              fontSize: '1rem',
+              color: 'var(--color-text-secondary)',
+              fontWeight: 300,
+              marginBottom: '1rem'
+            }}
+          >
+            Take a deep breath. The night is yours.
+          </motion.p>
+
           {/* Thin faint line */}
-          <motion.div 
+          <motion.div
             initial={{ scaleX: 0, opacity: 0 }}
             animate={{ scaleX: 1, opacity: 0.15 }}
-            transition={{ delay: 1, duration: 3 }}
-            style={{ 
-              height: '1px', 
-              width: '100%', 
-              background: 'white', 
+            transition={{ delay: 1.5, duration: 3 }}
+            style={{
+              height: '1px',
+              width: '100%',
+              background: 'white',
               transformOrigin: 'left',
               marginBottom: '1rem'
-            }} 
+            }}
           />
 
-          {/* Time & Weather - Now under greeting */}
+          {/* Time & Weather - Moved back below line */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1.5, duration: 2.5 }}
-            style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'flex-start', 
-              gap: '2rem', 
+            transition={{ delay: 2, duration: 2.5 }}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-start',
+              gap: '2rem',
               color: 'var(--color-text-muted)'
             }}
           >
@@ -115,19 +129,19 @@ const Dashboard = ({ onOpenJournal, onOpenSettings, onQuickJournal }) => {
           </motion.div>
         </div>
 
-        {/* Dock - aligned to top right base padding */}
+        {/* Dock */}
         <div style={{ display: 'flex', gap: '1rem' }}>
-          <button 
+          <button
             onClick={onOpenJournal}
-            className="glass-button" 
+            className="glass-button"
             style={{ width: '48px', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             title="Journal Gallery"
           >
             <Book size={20} />
           </button>
-          <button 
+          <button
             onClick={onOpenSettings}
-            className="glass-button" 
+            className="glass-button"
             style={{ width: '48px', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             title="Settings"
           >
@@ -136,22 +150,22 @@ const Dashboard = ({ onOpenJournal, onOpenSettings, onQuickJournal }) => {
         </div>
       </div>
 
-      {/* Interactive Session - Indented to match (4.5rem total from edge) */}
-      <div style={{ textAlign: 'left', maxWidth: '600px', marginLeft: '2rem', marginTop: '0.5rem' }}>
+      {/* Interactive Session */}
+      <div style={{ textAlign: 'left', maxWidth: '600px', marginLeft: '2rem', marginTop: '0rem' }}>
         <motion.p
           initial={{ x: -20, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
-          transition={{ delay: 2.5, duration: 2.5, ease: "easeOut" }} // Slow, relaxed
+          transition={{ delay: 3, duration: 2.5, ease: "easeOut" }}
           style={{ fontSize: '1rem', color: 'var(--color-text-secondary)', fontWeight: 300, marginBottom: '2rem' }}
         >
           How does the rain feel tonight?
         </motion.p>
 
         {/* Mood Selector */}
-        <motion.div 
+        <motion.div
           initial={{ x: -20, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
-          transition={{ delay: 3, duration: 2.5 }}
+          transition={{ delay: 3.5, duration: 2.5 }}
           style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', justifyContent: 'flex-start', marginBottom: '2rem' }}
         >
           {MOODS.map(m => (
@@ -174,23 +188,23 @@ const Dashboard = ({ onOpenJournal, onOpenSettings, onQuickJournal }) => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 10 }}
-                transition={{ duration: 1.5 }} // Relaxed prompt appearance
+                transition={{ duration: 1.5 }}
                 style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', justifyContent: 'flex-start' }}
               >
                 <span style={{ fontSize: '0.95rem', color: 'var(--color-text-secondary)', fontWeight: 300 }}>
                   Write about it?
                 </span>
                 <div style={{ display: 'flex', gap: '0.5rem' }}>
-                  <button 
+                  <button
                     onClick={() => onQuickJournal(selectedMood)}
-                    className="glass-button" 
+                    className="glass-button"
                     style={{ padding: '0.4rem 1.5rem', fontSize: '0.8rem', borderColor: 'var(--color-accent-teal)' }}
                   >
                     Yes
                   </button>
-                  <button 
+                  <button
                     onClick={() => { setShowPrompt(false); setSelectedMood(null); }}
-                    className="glass-button" 
+                    className="glass-button"
                     style={{ padding: '0.4rem 1.5rem', fontSize: '0.8rem' }}
                   >
                     No
