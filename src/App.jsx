@@ -4,7 +4,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import SplashScreen from './components/SplashScreen';
 import JournalHome from './components/JournalHome';
 import BackgroundEffects from './components/BackgroundEffects';
-import AmbientAudio from './components/AmbientAudio';
+import LofiRadio from './components/LofiRadio';
 import Login from './components/Login';
 import ImmersivePrompt from './components/ImmersivePrompt';
 import Preferences from './components/Preferences';
@@ -64,7 +64,7 @@ function App() {
       </AnimatePresence>
 
       <AnimatePresence>
-        {!showSplash && hasPrompted && <AmbientAudio key="audio" />}
+        {!showSplash && hasPrompted && <LofiRadio key="audio" />}
       </AnimatePresence>
     </GoogleOAuthProvider>
   );
