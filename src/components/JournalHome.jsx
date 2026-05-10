@@ -1,27 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getJournalsFromDrive, saveJournalsToDrive } from '../utils/driveSync';
+import { LogOut } from 'lucide-react';
 
 const MOODS = ['Calm', 'Tired', 'Lonely', 'Hopeful', 'Overwhelmed', 'Peaceful', 'Empty', 'Anxious'];
 
-const JournalHome = () => {
+const JournalHome = ({ accessToken, onLogout }) => {
   const [entries, setEntries] = useState([]);
   const [currentText, setCurrentText] = useState('');
   const [selectedMood, setSelectedMood] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [isFetching, setIsFetching] = useState(true);
+  const [fileId, setFileId] = useState(null);
 
-  // Load from local storage
+  // Load from Google Drive
   useEffect(() => {
-    const saved = localStorage.getItem('afterrain_entries');
-    if (saved) {
-      try {
-        setEntries(JSON.parse(saved));
-      } catch (e) {
-        console.error('Failed to parse entries', e);
+    const fetchFromCloud = async () => {
+      setIsFetching(true);
+      const data = await getJournalsFromDrive(accessToken);
+      
+      if (data.error && data.error.message.includes('401')) {
+        onLogout();
+        return;
       }
-    }
-  }, []);
+      
+      if (data.fileId) setFileId(data.fileId);
+      if (data.entries && data.entries.length > 0) setEntries(data.entries);
+      setIsFetching(false);
+    };
 
-  const handleSave = () => {
+    fetchFromCloud();
+  }, [accessToken]);
+
+  const handleSave = async () => {
     if (!currentText.trim() && !selectedMood) return;
     
     setIsSaving(true);
@@ -34,15 +46,21 @@ const JournalHome = () => {
     };
 
     const updatedEntries = [newEntry, ...entries];
+    // Optimistic UI update
+    setEntries(updatedEntries);
+    setCurrentText('');
+    setSelectedMood('');
     
-    // Simulate a slow, comforting save
-    setTimeout(() => {
-      setEntries(updatedEntries);
-      localStorage.setItem('afterrain_entries', JSON.stringify(updatedEntries));
-      setCurrentText('');
-      setSelectedMood('');
+    try {
+      const newFileId = await saveJournalsToDrive(accessToken, fileId, updatedEntries);
+      setFileId(newFileId);
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 3000);
+    } catch (error) {
+      console.error("Failed to save to cloud", error);
+    } finally {
       setIsSaving(false);
-    }, 1500);
+    }
   };
 
   const formatDate = (dateStr) => {
@@ -73,7 +91,19 @@ const JournalHome = () => {
       }}
     >
       {/* Main Journal Area */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', height: '100%', position: 'relative' }}>
+        {/* Top Header Row with Sign Out */}
+        <div style={{ position: 'absolute', top: 0, right: 0, zIndex: 20 }}>
+          <button 
+            onClick={onLogout}
+            className="glass-button"
+            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1rem', fontSize: '0.8rem' }}
+          >
+            <LogOut size={14} />
+            Sign Out
+          </button>
+        </div>
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -133,7 +163,19 @@ const JournalHome = () => {
             }}
           />
           
-          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '1rem', marginTop: '1rem' }}>
+            <AnimatePresence>
+              {showSuccess && (
+                <motion.span
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  style={{ color: 'var(--color-accent-teal)', fontSize: '0.9rem', fontWeight: 300 }}
+                >
+                  Safely stored in your cloud.
+                </motion.span>
+              )}
+            </AnimatePresence>
             <AnimatePresence>
               {(currentText.trim() || selectedMood) && (
                 <motion.button
@@ -170,7 +212,15 @@ const JournalHome = () => {
         
         <div style={{ flex: 1, overflowY: 'auto', paddingRight: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <AnimatePresence>
-            {entries.length === 0 ? (
+            {isFetching ? (
+              <motion.div 
+                initial={{ opacity: 0 }} 
+                animate={{ opacity: 1 }}
+                style={{ padding: '2rem 1rem', color: 'var(--color-text-muted)', textAlign: 'center', fontStyle: 'italic', fontWeight: 300 }}
+              >
+                Syncing with cloud...
+              </motion.div>
+            ) : entries.length === 0 ? (
               <motion.div 
                 initial={{ opacity: 0 }} 
                 animate={{ opacity: 1 }}
