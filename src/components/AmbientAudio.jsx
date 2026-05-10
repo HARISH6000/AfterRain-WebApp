@@ -3,7 +3,7 @@ import { Volume2, VolumeX } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const AmbientAudio = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
   const audioRef = useRef(null);
   
   useEffect(() => {
@@ -11,6 +11,13 @@ const AmbientAudio = () => {
     audioRef.current = new Audio('/ambient-lofi.mp3');
     audioRef.current.loop = true;
     audioRef.current.volume = 0.5; // Starts at 50% volume
+
+    // Attempt auto-play
+    audioRef.current.play().catch(e => {
+      console.log('Autoplay prevented by browser:', e);
+      // Fallback: If autoplay fails (e.g. no prior user interaction), reflect it in state
+      setIsPlaying(false);
+    });
 
     // Cleanup
     return () => {

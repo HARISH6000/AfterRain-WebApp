@@ -69,7 +69,9 @@ const SplashScreen = ({ onComplete }) => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'radial-gradient(circle at center, #1a2235 0%, #0a0f1a 100%)',
+        background: 'radial-gradient(circle at center, rgba(26, 34, 53, 0.4) 0%, rgba(10, 15, 26, 0.9) 100%)',
+        backdropFilter: 'blur(4px)',
+        WebkitBackdropFilter: 'blur(4px)',
         zIndex: 50,
         cursor: 'pointer',
       }}
