@@ -94,7 +94,7 @@ const LofiRadio = () => {
           alignItems: 'center', 
           gap: '1.25rem',
           borderRadius: 'var(--radius-full)',
-          transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+          transition: 'all 1s cubic-bezier(0.4, 0, 0.2, 1)', // Slowed from 0.4s
           background: 'rgba(15, 23, 42, 0.8)',
           border: '1px solid rgba(255, 255, 255, 0.08)',
           overflow: 'hidden'
@@ -143,6 +143,7 @@ const LofiRadio = () => {
                 initial={{ opacity: 0, x: 10 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 10 }}
+                transition={{ duration: 1, ease: "easeInOut" }} // Slow, smooth reveal
                 style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginLeft: 'auto', paddingRight: '0.5rem' }}
               >
                 <div style={{ display: 'flex', gap: '0.5rem' }}>
