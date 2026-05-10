@@ -7,17 +7,17 @@ export const STATIONS = [
     description: 'Soft lofi beats with a hint of rain.'
   },
   {
-    id: 'study-session',
-    name: 'Study Session',
-    url: 'https://archive.org/download/lofi-hip-hop-instrumentals/01.%20Lofi%20Hip%20Hop%20Instrumental.mp3',
+    id: 'soft-rain',
+    name: 'Soft Rain',
+    url: '/soft-rain-ambiance.mp3',
     color: 'var(--color-accent-teal)',
-    description: 'Clean, rhythmic beats for deep focus.'
+    description: 'Gentle raindrops for a quiet mind.'
   },
   {
-    id: 'starlit-jazz',
-    name: 'Starlit Jazz',
-    url: 'https://archive.org/download/lofi-hip-hop-instrumentals/10.%20Lofi%20Hip%20Hop%20Instrumental.mp3',
+    id: 'under-canopy',
+    name: 'Under Canopy',
+    url: '/under-the-canopy.mp3',
     color: 'rgba(255, 100, 200, 0.6)',
-    description: 'Smooth jazz-inspired lofi for late nights.'
+    description: 'Sheltered from the storm.'
   }
 ];
