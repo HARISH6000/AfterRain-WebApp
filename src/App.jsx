@@ -136,6 +136,10 @@ function App() {
             key="dashboard"
             onOpenJournal={() => setCurrentView('gallery')}
             onOpenSettings={() => setCurrentView('preferences')}
+            onQuickJournal={(mood) => { 
+              setSelectedEntry({ mood, text: '', date: new Date().toISOString() }); 
+              setCurrentView('editor'); 
+            }}
           />
         )}
       </AnimatePresence>

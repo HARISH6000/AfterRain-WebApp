@@ -3,7 +3,7 @@ import { Volume2, VolumeX, SkipForward, SkipBack } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { STATIONS } from '../constants/stations';
 
-const LofiRadio = ({ isMinimal = false }) => {
+const LofiRadio = () => {
   const [currentStationIndex, setCurrentStationIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.5);
@@ -11,8 +11,7 @@ const LofiRadio = ({ isMinimal = false }) => {
   const audioRef = useRef(null);
 
   const currentStation = STATIONS[currentStationIndex];
-  const showControls = isMinimal ? isHovered : true;
-
+  
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.pause();
@@ -76,8 +75,8 @@ const LofiRadio = ({ isMinimal = false }) => {
       onMouseLeave={() => setIsHovered(false)}
       style={{
         position: 'fixed',
-        bottom: '2rem',
-        left: '2rem',
+        bottom: '2.5rem',
+        left: '2.5rem',
         zIndex: 100,
         display: 'flex',
         alignItems: 'center',
@@ -87,13 +86,13 @@ const LofiRadio = ({ isMinimal = false }) => {
       <motion.div 
         className="glass-panel" 
         animate={{ 
-          minWidth: showControls ? '340px' : '60px',
-          padding: showControls ? '0.6rem 1rem' : '0.6rem'
+          minWidth: isHovered ? '380px' : '200px',
+          padding: '0.6rem 1rem'
         }}
         style={{ 
           display: 'flex', 
           alignItems: 'center', 
-          gap: showControls ? '1.25rem' : '0',
+          gap: '1.25rem',
           borderRadius: 'var(--radius-full)',
           transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
           background: 'rgba(15, 23, 42, 0.8)',
@@ -101,7 +100,7 @@ const LofiRadio = ({ isMinimal = false }) => {
           overflow: 'hidden'
         }}
       >
-        {/* Play/Pause Button / Main Icon */}
+        {/* Play/Pause Button (Speaker) */}
         <button
           onClick={togglePlay}
           className="glass-button"
@@ -119,32 +118,33 @@ const LofiRadio = ({ isMinimal = false }) => {
           {isPlaying ? <Volume2 size={18} color="var(--color-accent-teal)" /> : <VolumeX size={18} />}
         </button>
 
-        {/* Station Info - Only show if expanded */}
-        <AnimatePresence>
-          {showControls && (
-            <motion.div 
-              initial={{ opacity: 0, width: 0 }}
-              animate={{ opacity: 1, width: 'auto' }}
-              exit={{ opacity: 0, width: 0 }}
-              style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flex: 1 }}
-            >
-              <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', whiteSpace: 'nowrap' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                  <span style={{ fontSize: '0.85rem', fontWeight: 500, color: 'var(--color-text-primary)', letterSpacing: '0.02em' }}>
-                    {currentStation.name}
-                  </span>
-                  <div className="visualizer-container">
-                    <div className={`visualizer-bar ${isPlaying ? 'playing' : ''}`} />
-                    <div className={`visualizer-bar ${isPlaying ? 'playing' : ''}`} />
-                    <div className={`visualizer-bar ${isPlaying ? 'playing' : ''}`} />
-                  </div>
-                </div>
-                <span style={{ fontSize: '0.7rem', color: 'var(--color-text-secondary)', fontWeight: 300 }}>
-                  Lofi Station
-                </span>
+        {/* Station Info (Always visible by default) */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flex: 1 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', whiteSpace: 'nowrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+              <span style={{ fontSize: '0.85rem', fontWeight: 500, color: 'var(--color-text-primary)', letterSpacing: '0.02em' }}>
+                {currentStation.name}
+              </span>
+              <div className="visualizer-container">
+                <div className={`visualizer-bar ${isPlaying ? 'playing' : ''}`} />
+                <div className={`visualizer-bar ${isPlaying ? 'playing' : ''}`} />
+                <div className={`visualizer-bar ${isPlaying ? 'playing' : ''}`} />
               </div>
+            </div>
+            <span style={{ fontSize: '0.7rem', color: 'var(--color-text-secondary)', fontWeight: 300 }}>
+              Lofi Station
+            </span>
+          </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginLeft: 'auto', paddingRight: '0.5rem' }}>
+          {/* Controls - Only show on hover */}
+          <AnimatePresence>
+            {isHovered && (
+              <motion.div 
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 10 }}
+                style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginLeft: 'auto', paddingRight: '0.5rem' }}
+              >
                 <div style={{ display: 'flex', gap: '0.5rem' }}>
                   <button 
                     onClick={(e) => { e.stopPropagation(); prevStation(); }} 
@@ -172,10 +172,10 @@ const LofiRadio = ({ isMinimal = false }) => {
                   className="volume-slider"
                   onClick={(e) => e.stopPropagation()}
                 />
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </motion.div>
     </motion.div>
   );

@@ -57,7 +57,7 @@ body {
   border-radius: var(--radius-full);
   color: var(--color-text-primary);
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .glass-button:hover {
@@ -177,7 +177,7 @@ textarea::placeholder {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 2px;
   outline: none;
-  transition: all 0.3s;
+  transition: all 0.8s;
 }
 
 .volume-slider::-webkit-slider-thumb {
